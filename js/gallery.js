@@ -98,11 +98,11 @@ gallery.addEventListener('click', event => {
   `, {
     onShow: () => {
       document.addEventListener('keydown', onEscClose);
-      document.addEventListener('click', onImageClick);
+    //   document.addEventListener('click', onImageClick);
     },
     onClose: () => {
       document.removeEventListener('keydown', onEscClose);
-      document.removeEventListener('click', onImageClick);
+    //   document.removeEventListener('click', onImageClick);
     }
   });
 
