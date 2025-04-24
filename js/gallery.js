@@ -64,47 +64,34 @@ const images = [
     },
 ];
 
-
-
 const gallery = document.querySelector('.gallery');
-const item = gallery.querySelector('.gallery-item');
-item.remove(); 
 
-images.forEach(({ preview, original, description }) => {
-  const clone = item.cloneNode(true); 
-  const link = clone.querySelector('.gallery-link');
-  const img = clone.querySelector('.gallery-image');
+const add = images.map(({ preview, original, description }) => {
+    return `<li class = "gallery-item"> <a href="${original}"><img class = "gallery-image" src = "${preview}" data-source = "${original}" alt = "${description}"></a></li>`;
+}).join(' ');
 
-  img.setAttribute('src', preview);
-  img.setAttribute('alt', description);
-  link.setAttribute('href', original);
-  img.dataset.source = original; 
-
-  gallery.append(clone);
-});
+gallery.insertAdjacentHTML('beforeend', add);
 
 gallery.addEventListener('click', event => {
-  event.preventDefault();
+    event.preventDefault();
 
-  const clickedImage = event.target.closest('.gallery-image');
-  if (!clickedImage) return;
+    const clickedImage = event.target.closest('.gallery-image');
+    if (!clickedImage) return;
 
-  const largeImageURL = clickedImage.dataset.source;
+    const largeImageURL = clickedImage.dataset.source;
 
-  const instance = basicLightbox.create(`
-    <div class="modal">
-      <img src="${largeImageURL}" class="modal-image">
-    </div>
-  `, {
-    onShow: () => {
-      document.addEventListener('keydown', onEscClose);
-    //   document.addEventListener('click', onImageClick);
-    },
-    onClose: () => {
-      document.removeEventListener('keydown', onEscClose);
-    //   document.removeEventListener('click', onImageClick);
-    }
-  });
+    const instance = basicLightbox.create(`
+     <div class="modal">
+       <img src="${largeImageURL}" class="modal-image">
+     </div>
+   `, {
+        onShow: () => {
+            document.addEventListener('keydown', onEscClose);
+        },
+        onClose: () => {
+            document.removeEventListener('keydown', onEscClose);
+        }
+    });
 
   instance.show();
 
@@ -113,13 +100,9 @@ gallery.addEventListener('click', event => {
       instance.close();
     }
   }
-
-  function onImageClick(e) {
-    if (e.target.classList.contains('modal-image')) {
-      instance.close();
-    }
-  }
 });
+
+
 
 
 
